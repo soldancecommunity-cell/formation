@@ -54,8 +54,8 @@ input{font-family:inherit}
 }
 .tb-logo{
   width:30px;height:30px;border-radius:9px;flex:0 0 30px;display:grid;place-items:center;
-  background:radial-gradient(circle at 34% 30%,var(--gold),var(--gold2));
-  box-shadow:0 0 16px var(--goldglow); color:#1a140a;font-weight:900;font-size:15px;
+  background:var(--bg4);border:1px solid var(--line2);
+  color:var(--gold);font-weight:900;font-size:14px;letter-spacing:-.02em;
 }
 .tb-title{
   flex:1; min-width:0; background:transparent;border:1px solid transparent;color:var(--text);
@@ -75,7 +75,7 @@ input{font-family:inherit}
 .stagewrap{flex:1;position:relative;min-height:0;background:radial-gradient(900px 600px at 50% -8%,#1b1622 0%,var(--bg) 60%);overflow:hidden;touch-action:none}
 #cv2d{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
 
-.chips{position:absolute;top:10px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:6;pointer-events:none}
+.chips{position:absolute;top:calc(10px + var(--sat));left:calc(10px + var(--sal));display:flex;gap:7px;z-index:6;pointer-events:none}
 .chip{
   font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;
   background:rgba(20,17,25,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
@@ -84,26 +84,19 @@ input{font-family:inherit}
 .chip b{color:var(--gold)}
 .chip.move{color:var(--cyan);border-color:var(--cyan2)}
 
-/* Floating side controls (right) */
-.fab-col{position:absolute;right:calc(10px + var(--sar));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px;z-index:7}
+/* Floating tool strip (top-right of the stage, horizontal) */
+.fab-col{position:absolute;top:calc(8px + var(--sat));right:calc(8px + var(--sar));display:flex;flex-direction:row;gap:7px;z-index:8}
 .fab{
-  width:46px;height:46px;border-radius:15px;display:grid;place-items:center;
-  background:rgba(31,27,38,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  border:1px solid var(--line2);box-shadow:0 6px 20px rgba(0,0,0,.4);
+  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+  background:rgba(31,27,38,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--line2);box-shadow:0 5px 16px rgba(0,0,0,.4);
 }
 .fab:active{transform:scale(.9);background:var(--bg4)}
-.fab svg{width:21px;height:21px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fab svg{width:19px;height:19px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fab.on{background:linear-gradient(180deg,var(--gold),var(--gold2));border-color:transparent}
 .fab.on svg{stroke:#1a140a}
 .fab .badge{position:absolute;top:-4px;right:-4px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--cyan);color:#06222a;font-size:10px;font-weight:800;display:grid;place-items:center;font-family:var(--mono)}
 .fab.disabled{opacity:.34;pointer-events:none}
-
-/* Left zoom controls */
-.zoomcol{position:absolute;left:calc(10px + var(--sal));bottom:14px;display:flex;flex-direction:column;gap:7px;z-index:7}
-.zbtn{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:20px;font-weight:600;
-  background:rgba(31,27,38,.8);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line2);color:var(--text)}
-.zbtn:active{transform:scale(.9)}
-.zbtn svg{width:18px;height:18px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 /* formation pager (top-center under chips) */
 .pager{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;z-index:7}
@@ -115,7 +108,7 @@ input{font-family:inherit}
 .pglabel small{display:block;font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.08em}
 
 /* drag coordinate readout */
-.coord{position:absolute;top:10px;right:calc(10px + var(--sar));z-index:8;font-family:var(--mono);font-size:12px;font-weight:600;
+.coord{position:absolute;bottom:calc(14px + var(--sab));left:calc(10px + var(--sal));z-index:8;font-family:var(--mono);font-size:12px;font-weight:600;
   background:rgba(20,17,25,.85);border:1px solid var(--gold2);color:var(--gold);padding:6px 9px;border-radius:9px;display:none}
 
 /* on-stage micro nudge pad (left-center, out of the way) */
@@ -338,22 +331,17 @@ input{font-family:inherit}
 .toast svg{width:18px;height:18px;stroke:var(--ok);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;flex:0 0 18px}
 
 /* ============ SPLASH ============ */
-.splash{position:fixed;inset:0;z-index:500;background:radial-gradient(120% 90% at 50% 38%,#1d1726 0%,#0e0c11 62%);
+.splash{position:fixed;inset:0;z-index:500;background:radial-gradient(120% 90% at 50% 40%,#191520 0%,#0e0c11 64%);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:opacity .6s ease,visibility .6s}
 .splash.hide{opacity:0;visibility:hidden;pointer-events:none}
-.sun{position:relative;width:128px;height:128px;display:grid;place-items:center;margin-bottom:30px}
-.sun .core{width:78px;height:78px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#fff0cf,var(--gold) 42%,var(--gold2) 100%);
-  box-shadow:0 0 50px var(--goldglow),0 0 90px rgba(232,199,126,.14);z-index:2;
-  animation:breathe 3.4s var(--ease) infinite}
-@keyframes breathe{50%{transform:scale(1.06)}}
-.sun .rays{position:absolute;inset:0;animation:spin 26s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.sun .ray{position:absolute;left:50%;top:50%;width:2.5px;height:60px;background:linear-gradient(var(--gold),transparent);transform-origin:top center;border-radius:2px;opacity:.55}
+.fl-mark{width:118px;height:80px;margin-bottom:26px;opacity:0;animation:rise .7s var(--ease) .1s forwards}
+.fl-mark .d{fill:var(--gold)}
+.fl-mark .d2{fill:var(--cyan)}
+.fl-mark .ln{stroke:var(--line2);stroke-width:1.4;fill:none;stroke-dasharray:3 4}
 .splash .wm{font-size:30px;font-weight:900;letter-spacing:.02em;opacity:0;animation:rise .7s var(--ease) .35s forwards}
 .splash .wm span{color:var(--gold)}
 .splash .tag{font-size:12px;color:var(--muted);letter-spacing:.32em;text-transform:uppercase;margin-top:9px;opacity:0;animation:rise .7s var(--ease) .55s forwards;font-weight:600}
 @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.splash .credit{position:absolute;bottom:calc(28px + var(--sab));font-size:10.5px;color:var(--muted2);letter-spacing:.16em;font-weight:600}
 
 /* spinner inside buttons */
 .spin{width:15px;height:15px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:rot .7s linear infinite;display:inline-block}
@@ -396,7 +384,7 @@ input{font-family:inherit}
   .topbar{padding-left:max(20px,var(--sal));padding-right:max(20px,var(--sar))}
   .sheet{left:50%;transform:translateX(-50%) translateY(100%);width:min(560px,94vw);border-radius:var(--r3) var(--r3) 0 0}
   .sheet.show{transform:translateX(-50%) translateY(0)}
-  .fab-col{gap:14px} .fab{width:54px;height:54px} .zbtn{width:46px;height:46px}
+  .fab-col{gap:9px} .fab{width:44px;height:44px}
   .app.tl .tlpanel{height:248px}
   .fcard{width:148px} .fcard .fc-thumb{min-height:104px}
   .tabbar .tab span{font-size:12px}
@@ -435,16 +423,59 @@ input{font-family:inherit}
 .stepper input{width:64px;height:46px;text-align:center;font-size:18px;font-weight:800;color:var(--text);background:transparent;border:none;border-left:1px solid var(--line);border-right:1px solid var(--line);-moz-appearance:textfield}
 .stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .bulk-add .mbtn.sm{min-height:46px;padding:0 16px;font-size:13px;flex:0 0 auto}
+
+/* ============ LANDSCAPE-FIRST LAYOUT ============ */
+/* The app is designed for landscape (iPhone / iPad). Chrome is kept slim so the
+   editing canvas (preview) is as large as possible. */
+@media (orientation:landscape){
+  .topbar{height:calc(46px + var(--sat))}
+  .tabbar{height:calc(52px + var(--sab))}
+}
+@media (orientation:landscape) and (max-height:480px){
+  .tabbar{height:calc(46px + var(--sab))}
+  .tab svg{width:20px;height:20px}
+  .tab span{font-size:9px}
+  .app.tl .tlpanel{height:166px}
+  .tl-wave{height:38px}
+}
+
+/* ============ ROTATE GATE (force landscape on the web) ============ */
+.rotate-gate{position:fixed;inset:0;z-index:600;background:radial-gradient(120% 90% at 50% 40%,#191520 0%,#0e0c11 64%);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:40px;
+  padding-top:calc(40px + var(--sat));padding-bottom:calc(40px + var(--sab))}
+@media (orientation:portrait){.rotate-gate{display:flex}}
+.rotate-gate .rg-ico{width:80px;height:80px;display:grid;place-items:center;color:var(--gold);
+  border:1.5px solid var(--line2);border-radius:22px;background:var(--bg3);animation:rgturn 2.6s var(--ease) infinite}
+.rotate-gate .rg-ico svg{width:40px;height:40px;stroke:var(--gold);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@keyframes rgturn{0%,28%{transform:rotate(0)}55%,80%{transform:rotate(90deg)}100%{transform:rotate(90deg)}}
+.rotate-gate h2{font-size:20px;font-weight:900;color:var(--text);letter-spacing:.02em}
+.rotate-gate p{font-size:13.5px;color:var(--muted);line-height:1.7;max-width:320px}
+.rotate-gate .rg-wm{position:absolute;bottom:calc(24px + var(--sab));font-size:11px;letter-spacing:.22em;color:var(--muted2);font-weight:700;text-transform:uppercase}
+
 </style>
 </head>
 <body>
 
 <!-- ============ SPLASH ============ -->
 <div class="splash" id="splash">
-  <div class="sun"><div class="rays" id="rays"></div><div class="core"></div></div>
+  <svg class="fl-mark" viewBox="0 0 118 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path class="ln" d="M16 60 L40 26 L78 26 L102 60"/>
+    <circle class="d" cx="16" cy="60" r="6"/>
+    <circle class="d" cx="40" cy="26" r="6"/>
+    <circle class="d2" cx="59" cy="46" r="6"/>
+    <circle class="d" cx="78" cy="26" r="6"/>
+    <circle class="d" cx="102" cy="60" r="6"/>
+  </svg>
   <div class="wm">Formation <span>Logic</span></div>
   <div class="tag">Dance Formation Studio</div>
-  <div class="credit">SoL DANCE</div>
+</div>
+
+<!-- ============ ROTATE GATE (portrait → ask to rotate) ============ -->
+<div class="rotate-gate" id="rotateGate">
+  <div class="rg-ico"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M9 19h6"/></svg></div>
+  <h2>横向きでご利用ください</h2>
+  <p>Formation Logic は横画面に最適化されています。端末を横向きに回転してください。</p>
+  <div class="rg-wm">Formation Logic</div>
 </div>
 
 <!-- ============ APP ============ -->
@@ -468,30 +499,12 @@ input{font-family:inherit}
     <div class="coord" id="coord">0.0 , 0.0</div>
 
     <div class="fab-col">
-      <button class="fab" id="fabEdit" aria-label="選択ツール" style="display:none"><svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></button>
       <button class="fab" id="fabLayers" aria-label="フォーメーション一覧"><svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18"/></svg></button>
       <button class="fab" id="fabSelect" aria-label="複数選択"><svg viewBox="0 0 24 24"><path d="M4 4h4M4 4v4M20 4h-4M20 4v4M4 20h4M4 20v-4M20 20h-4M20 20v-4"/></svg></button>
       <button class="fab" id="fabSnap" aria-label="グリッド吸着"><svg viewBox="0 0 24 24"><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></button>
       <button class="fab" id="fabPreview" aria-label="客席プレビュー"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
       <button class="fab" id="fabTpl" aria-label="フォーメーション型"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="13" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg></button>
-    </div>
-
-    <!-- on-stage micro nudge pad (appears when a dancer is selected) -->
-    <div class="nudgepad" id="nudgePad" style="display:none">
-      <div class="np-read" id="npRead">—</div>
-      <div class="np-grid">
-        <div></div><button class="np-btn" data-snudge="u"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button><div></div>
-        <button class="np-btn" data-snudge="l"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></button>
-        <button class="np-btn ctr" id="npStep" aria-label="ステップ切替">.25</button>
-        <button class="np-btn" data-snudge="r"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-        <div></div><button class="np-btn" data-snudge="d"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg></button><div></div>
-      </div>
-    </div>
-
-    <div class="zoomcol">
-      <button class="zbtn" id="zIn">＋</button>
-      <button class="zbtn" id="zOut">−</button>
-      <button class="zbtn" id="zReset" aria-label="リセット"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 19v-5h5"/></svg></button>
+      <button class="fab" id="fabEdit" aria-label="プロパティ"><svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></button>
     </div>
 
     <div class="pager">
@@ -1076,12 +1089,16 @@ function resize2D(){
   cv2d.width=Math.round(r.width*dpr); cv2d.height=Math.round(r.height*dpr);
   cv2d.style.width=r.width+"px"; cv2d.style.height=r.height+"px";
   ctx.setTransform(dpr,0,0,dpr,0,0);
-  const cw=r.width,ch=r.height,m=40;
+  const cw=r.width,ch=r.height;
+  // reserve a little space for the top tool strip and the bottom pager so the
+  // stage never hides under them, but keep the editing area as large as possible
+  const mt=54, mb=52, mx=28;
   const tW=totalW();
-  const fit=Math.min((cw-2*m)/tW,(ch-2*m)/STAGE.D);
+  const fit=Math.min((cw-2*mx)/tW,(ch-mt-mb)/STAGE.D);
   const s=fit*(ui.stageZoom||1);
-  viewT={ s, ox:(cw-tW*s)/2+(ui.panX||0), oy:(ch-STAGE.D*s)/2+(ui.panY||0), cw, ch };
-  DOT_R=clamp(s*0.62,11,30)*((state.show&&state.show.pinSize)||1);
+  viewT={ s, ox:(cw-tW*s)/2+(ui.panX||0), oy:mt+((ch-mt-mb)-STAGE.D*s)/2+(ui.panY||0), cw, ch };
+  // dancer pins: 70% of the previous standard size for a cleaner, less cramped stage
+  DOT_R=clamp(s*0.62,11,30)*0.7*((state.show&&state.show.pinSize)||1);
   draw2D();
 }
 function s2p(x,z){ return { x:viewT.ox+(x+totalW()/2)*viewT.s, y:viewT.oy+(STAGE.D-z)*viewT.s }; }
@@ -1388,6 +1405,7 @@ let drag=null, marquee=null;
 const LIFT=()=>DOT_R+34;          // px the dot floats above the fingertip while dragging
 const DRAG_THRESH=8;              // px the finger must travel before a drag (and lift) engages
 let touchPts=new Map(), pinch=null;
+let _lastTapT=0,_lastTapX=0,_lastTapY=0;   // double-tap → reset zoom/pan (replaces +/- buttons)
 function pinchDist(){ const p=[...touchPts.values()]; return Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)||1; }
 function pinchMid(){ const p=[...touchPts.values()]; return {x:(p[0].x+p[1].x)/2,y:(p[0].y+p[1].y)/2}; }
 
@@ -1400,6 +1418,16 @@ function onPointerDown(e){
   if(e.pointerType==="touch"){ touchPts.set(e.pointerId,{x:e.clientX,y:e.clientY});
     if(touchPts.size===2){ drag=null; marquee=null; dragLift=null; pinch={d0:pinchDist(),z0:ui.stageZoom||1,m0:pinchMid(),px0:ui.panX||0,py0:ui.panY||0}; draw2D(); return; }
     if(touchPts.size>2) return; }
+  // double-tap to reset zoom & pan (the +/- buttons are gone — pinch + double-tap only)
+  { const now=Date.now(), single=(e.pointerType!=="touch")||touchPts.size<=1;
+    if(single && now-_lastTapT<300 && Math.abs(e.clientX-_lastTapX)<28 && Math.abs(e.clientY-_lastTapY)<28){
+      _lastTapT=0;
+      if((ui.stageZoom||1)!==1 || ui.panX || ui.panY){
+        ui.stageZoom=1; ui.panX=0; ui.panY=0; drag=null; marquee=null;
+        if(ui.preview)draw2D(); else resize2D(); haptic(); return;
+      }
+    }
+    _lastTapT=now; _lastTapX=e.clientX; _lastTapY=e.clientY; }
   if(ui.preview) return;
   if(ui.playing) return;
   const rect=cv2d.getBoundingClientRect(), px=e.clientX-rect.left, py=e.clientY-rect.top;
@@ -1422,12 +1450,22 @@ function onPointerDown(e){
   // dancer hit
   const hit=hitDancer(px,py,f.positions);
   if(hit){
-    if(ui.multiSelect){ toggleSel(hit); haptic(); renderDancerList(); openOrUpdateProps(); updateNudgePad(); draw2D(); return; }
-    if(!isSel(hit)) setSel(hit);
     ui.selDevice=null;
+    if(ui.multiSelect){
+      // tap an unselected dancer → add to the selection; tap a selected one without
+      // moving → remove it; press any selected dancer and drag → move the whole group.
+      const already=isSel(hit);
+      if(!already) toggleSel(hit);            // add now so the dragged group includes it
+      haptic();
+      const dp=s2p(f.positions[hit].x,f.positions[hit].z);
+      drag={ kind:"group", multi:true, pendingToggle:already, grab:{dx:dp.x-px,dy:dp.y-py}, start:{}, lead:hit, moved:false, x0:px, y0:py };
+      ui.sel.forEach(id=>{ const q=f.positions[id]; if(q)drag.start[id]={x:q.x,z:q.z}; });
+      renderDancerList(); openOrUpdateProps(); draw2D(); return;
+    }
+    if(!isSel(hit)) setSel(hit);
     const dp=s2p(f.positions[hit].x,f.positions[hit].z);
     drag={ kind:"group", grab:{dx:dp.x-px,dy:dp.y-py}, start:{}, lead:hit, moved:false, wasSel:isSel(hit), x0:px, y0:py };
-    ui.sel.forEach(id=>{ const q=f.positions[id]; drag.start[id]={x:q.x,z:q.z}; });
+    ui.sel.forEach(id=>{ const q=f.positions[id]; if(q)drag.start[id]={x:q.x,z:q.z}; });
     haptic(); openOrUpdateProps(); renderDancerList(); draw2D(); return;
   }
   // device hit (after dancers, so dancers win when overlapping)
@@ -1460,8 +1498,10 @@ function moveRaf(){
   if(!drag)return;
   if(drag.kind==="group"){
     if(!drag.moved){ if(Math.hypot(px-drag.x0,py-drag.y0)<DRAG_THRESH) return; pushUndo(); drag.moved=true; }
-    // lead dancer floats above the fingertip; group moves by same delta
-    const leadScreen={x:px+drag.grab.dx, y:py+drag.grab.dy-LIFT()};
+    // single selection floats above the fingertip (so the dot stays visible);
+    // a multi-selection tracks the finger directly for predictable group moves
+    const lift=(ui.sel.length>1)?0:LIFT();
+    const leadScreen={x:px+drag.grab.dx, y:py+drag.grab.dy-lift};
     let sp=p2s(leadScreen.x,leadScreen.y); sp.x=snapVal(sp.x); sp.z=snapVal(sp.z);
     const f=state.formations[ef], s0=drag.start[drag.lead];
     let dx=sp.x-s0.x, dz=sp.z-s0.z;
@@ -1490,7 +1530,12 @@ function onPointerUp(e){
   if(marquee){ const tapped=!marquee.moved; marquee=null;
     if(tapped&&ui.multiSelect){ ui.multiSelect=false; const fb=$("fabSelect"); if(fb)fb.classList.remove("on"); toast("複数選択：オフ"); }
     renderDancerList(); openOrUpdateProps(); draw2D(); autoSave(); }
-  if(drag){ const tapDevice=(drag.kind==="device"&&!drag.moved); const changed=drag.moved; drag=null;
+  if(drag){
+    const tapDevice=(drag.kind==="device"&&!drag.moved);
+    const changed=drag.moved;
+    const togOff=(drag.kind==="group"&&drag.multi&&!drag.moved&&drag.pendingToggle)?drag.lead:null;
+    drag=null;
+    if(togOff){ toggleSel(togOff); haptic(); }
     if(tapDevice){ openSheet("sheetProps"); openOrUpdateProps(); }
     openOrUpdateProps(); renderDancerList(); renderTimeline(); updateNudgePad(); draw2D(); if(changed)autoSave(); }
 }
@@ -1502,18 +1547,11 @@ function hideCoord(){ $("coord").style.display="none"; }
    ===================================================================== */
 function refreshAll(){ renderDancerList(); renderTimeline(); updateChips(); updatePager(); updateTimecode(); openOrUpdateProps(); updateNudgePad(); draw2D(); autoSave(); }
 
-/* on-stage nudge pad: visible only in stage mode while dancers are selected */
+/* The on-stage nudge popup has been removed (fine positioning is done by dragging,
+   with optional grid snap). This now just lights up the プロパティ tool button when
+   something is selected, so it's clear properties are available. */
 function updateNudgePad(){
-  const pad=$("nudgePad"); if(!pad)return;
-  const show=(ui.mode==="stage" && !ui.preview && !ui.playing && ui.sel.length>0 && ui.editFormation>=0);
-  pad.style.display=show?"block":"none";
-  const fe=$("fabEdit"); if(fe)fe.style.display=show?"grid":"none";
-  if(!show)return;
-  const st=$("npStep"); if(st)st.textContent=(ui.nudgeStep+"").replace(/^0/,"");
-  const ro=$("npRead"); if(!ro)return;
-  if(ui.sel.length>1){ ro.textContent=ui.sel.length+"人"; return; }
-  const f=state.formations[ui.editFormation], p=f&&f.positions[ui.sel[0]];
-  ro.textContent=p?("X "+p.x.toFixed(2)+"\nZ "+p.z.toFixed(2)):"—";
+  const fe=$("fabEdit"); if(fe) fe.classList.toggle("on", ui.sel.length>0 || !!ui.selDevice);
 }
 function nudgeSelected(dir){
   if(ui.editFormation<0||!ui.sel.length)return;
@@ -1670,7 +1708,7 @@ function renderDancerProps(){
     '<input type="range" class="range" id="spdR" min="0.3" max="2.5" step="0.1" value="'+(mv.speed||1)+'"></div>'+
     '<div class="field"><label>開始ディレイ <span class="valb" id="dlyV">'+((mv.delay||0).toFixed(1))+'s</span></label>'+
     '<input type="range" class="range" id="dlyR" min="0" max="3" step="0.1" value="'+(mv.delay||0)+'"></div></div>'; }
-  h+='<p class="note" style="margin:2px 0 10px">位置の微調整は画面右下のパッド、カラーは「ダンサー」タブで変更できます。</p>';
+  h+='<p class="note" style="margin:2px 0 10px">位置はステージ上でドラッグして調整できます（グリッド吸着オンで0.5m単位）。カラーは「ダンサー」タブで変更できます。</p>';
   // actions
   h+='<div class="btns" style="margin-top:4px">';
   if(multi){ h+='<button class="mbtn" id="alignRow">横一列</button><button class="mbtn" id="alignCol">縦一列</button>'+
@@ -2338,7 +2376,7 @@ function renderMenuSheet(){
     '<button class="mbtn full" id="mTerms">利用規約</button>'+
     '<button class="mbtn full" id="mPrivacy">プライバシーポリシー</button>'+
     '</div>'+
-    '<p class="note" style="text-align:center;margin-bottom:0">Formation Logic · SoL DANCE<br>データは端末内に保存されます。</p></div>';
+    '<p class="note" style="text-align:center;margin-bottom:0">Formation Logic<br>データは端末内に保存されます。</p></div>';
 
   const sw=$("stageW"),sd=$("stageD"),swg=$("stageWing");
   const liveStage=()=>{ $("stW").textContent=sw.value; $("stD").textContent=sd.value; $("stWing").textContent=swg.value; };
@@ -2457,6 +2495,7 @@ async function grantConsent(){
   try{ await idbSet(K_CONSENT,{agreed:true,t:Date.now(),v:1}); }catch(e){}
   $("consentScrim").classList.remove("show");
   $("sheetConsent").classList.remove("show");
+  tryLockLandscape();
   toast("ようこそ Formation Logic へ");
 }
 
@@ -2490,6 +2529,12 @@ function buildRays(){
   for(let i=0;i<N;i++) h+='<div class="ray" style="transform:translateX(-50%) rotate('+(i*(360/N))+'deg)"></div>';
   host.innerHTML=h;
 }
+/* Attempt to lock to landscape on platforms that support it (installed PWA / Android).
+   On iOS Safari this silently no-ops and the portrait rotate-gate handles it instead.
+   A native App Store build should enforce landscape via its own configuration. */
+function tryLockLandscape(){
+  try{ const so=screen.orientation; if(so&&so.lock) so.lock("landscape").catch(()=>{}); }catch(e){}
+}
 
 /* =====================================================================
    WIRING + BOOT
@@ -2521,6 +2566,7 @@ function wire(){
   // ---- stage pointer ----
   cv2d=$("cv2d"); ctx=cv2d.getContext("2d");
   cv2d.addEventListener("pointerdown",onPointerDown);
+  cv2d.addEventListener("pointerdown",()=>tryLockLandscape(),{once:true});
   // timeline seek bar scrubbing
   (function(){ const seek=$("tlSeek"); if(!seek)return; let on=false;
     const seekTo=cx=>{ const r=seek.getBoundingClientRect(); const frac=clamp((cx-r.left)/r.width,0,1); const {total}=schedule();
@@ -2534,32 +2580,19 @@ function wire(){
   window.addEventListener("pointerup",onPointerUp);
   window.addEventListener("pointercancel",onPointerUp);
 
-  // ---- FABs ----
+  // ---- tool strip ----
   $("fabSelect").addEventListener("click",()=>{ ui.multiSelect=!ui.multiSelect; $("fabSelect").classList.toggle("on",ui.multiSelect);
     if(!ui.multiSelect&&ui.sel.length>1){ ui.sel=ui.sel.slice(-1); draw2D(); renderDancerList(); openOrUpdateProps(); }
     updateNudgePad();
-    toast(ui.multiSelect?"複数選択：オン（空白をなぞって範囲選択）":"複数選択：オフ"); haptic(); });
+    toast(ui.multiSelect?"複数選択：オン（タップで選択 / 選択したピンをドラッグで移動）":"複数選択：オフ"); haptic(); });
   $("fabSnap").addEventListener("click",()=>{ ui.snap=!ui.snap; $("fabSnap").classList.toggle("on",ui.snap); draw2D(); toast(ui.snap?"グリッド吸着：オン":"グリッド吸着：オフ"); haptic(); });
   $("fabPreview").addEventListener("click",()=>{ ui.preview=!ui.preview; $("fabPreview").classList.toggle("on",ui.preview); updateChips(); updateNudgePad(); draw2D(); haptic(); });
   $("fabTpl").addEventListener("click",()=>{ renderTemplates(); openSheet("sheetTpl"); });
   $("fabLayers").addEventListener("click",()=>{ renderLayersList(); openSheet("sheetLayers"); });
-  $("fabEdit").addEventListener("click",()=>{ if(!ui.sel.length)return; openSheet("sheetProps"); renderDancerProps(); });
-  // on-stage nudge pad
-  $("npStep").addEventListener("click",()=>{ const seq=[0.1,0.25,0.5,1]; const i=seq.indexOf(ui.nudgeStep); ui.nudgeStep=seq[(i+1)%seq.length]; updateNudgePad(); haptic(); });
-  document.querySelectorAll("[data-snudge]").forEach(btn=>{
-    const dir=btn.dataset.snudge; let hold=null,rep=null,started=false;
-    const start=()=>{ beginEdit(); started=true; nudgeSelected(dir); hold=setTimeout(()=>{ rep=setInterval(()=>nudgeSelected(dir),90); },380); };
-    const stop=()=>{ clearTimeout(hold); clearInterval(rep); rep=null; if(started){ started=false; endEdit(); } };
-    btn.addEventListener("pointerdown",e=>{ e.preventDefault(); start(); });
-    btn.addEventListener("pointerup",stop); btn.addEventListener("pointercancel",stop); btn.addEventListener("pointerleave",stop);
-  });
+  $("fabEdit").addEventListener("click",()=>{ openSheet("sheetProps"); openOrUpdateProps(); });
   // layers sheet add
   $("layersAdd").addEventListener("click",()=>{ addFormation(ui.selFormation); renderLayersList(); toast("構成を追加しました"); });
 
-  // ---- zoom ----
-  $("zIn").addEventListener("click",()=>{ ui.stageZoom=clamp((ui.stageZoom||1)*1.25,0.5,4); resize2D(); });
-  $("zOut").addEventListener("click",()=>{ ui.stageZoom=clamp((ui.stageZoom||1)/1.25,0.5,4); resize2D(); });
-  $("zReset").addEventListener("click",()=>{ ui.stageZoom=1; ui.panX=0; ui.panY=0; resize2D(); });
 
   // ---- pager ----
   $("pgPrev").addEventListener("click",()=>gotoFormation(ui.selFormation-1));
