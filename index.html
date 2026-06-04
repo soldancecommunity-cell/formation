@@ -37,7 +37,7 @@ body{
   position:fixed; inset:0; width:100%;
   -webkit-font-smoothing:antialiased;
 }
-button{font-family:inherit;color:var(--text);cursor:pointer;border:none;background:none;font-size:inherit}
+button{font-family:inherit;color:var(--text);cursor:pointer;border:none;background:none;font-size:inherit;touch-action:manipulation}
 input{font-family:inherit}
 .mono{font-family:var(--mono)}
 .hidden{display:none!important}
@@ -76,8 +76,10 @@ input{font-family:inherit}
 .gbtn.gold svg{stroke:#1a140a}.gbtn.gold .lbl{color:#1a140a}
 
 /* corner anchors (respect safe areas) */
-.hud-tl{top:calc(10px + var(--sat));left:calc(10px + var(--sal));align-items:flex-start;flex-direction:column}
-.hud-tr{top:calc(10px + var(--sat));right:calc(10px + var(--sar));align-items:flex-start}
+.hud-tl{top:calc(10px + var(--sat));left:calc(10px + var(--sal));align-items:flex-start;flex-direction:column;gap:8px}
+.hud-tr{top:calc(10px + var(--sat));right:calc(10px + var(--sar));align-items:flex-end;flex-direction:column;gap:8px}
+.tl-row{display:flex;gap:9px;align-items:flex-start}
+.tr-row{display:flex;gap:9px;align-items:flex-start}
 .hud-bl{bottom:calc(12px + var(--sab));left:calc(12px + var(--sal));flex-direction:column;align-items:flex-start;gap:9px}
 .cam-wrap{position:relative;flex-direction:column;align-items:flex-start}
 .hud-br{bottom:calc(12px + var(--sab));right:calc(12px + var(--sar));flex-direction:column;align-items:flex-end;gap:9px}
@@ -114,12 +116,14 @@ input{font-family:inherit}
 .chip.move{color:var(--cyan);border-color:var(--cyan2)}
 .tool-strip{pointer-events:auto;display:flex;gap:6px;background:rgba(26,22,33,.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line2);border-radius:16px;padding:6px}
 .tbtn{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:transparent;border:1px solid transparent;color:var(--text)}
+.tbtn.sm{width:36px;height:36px;border-radius:10px}
+.tbtn.sm svg{width:18px;height:18px}
 .tbtn:active{transform:scale(.9)}
 .tbtn svg{width:20px;height:20px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .tbtn.on{background:linear-gradient(180deg,var(--gold),var(--gold2));border-color:transparent}
 .tbtn.on svg{stroke:#1a140a}
 .tdiv{width:1px;align-self:stretch;background:var(--line2);margin:2px 1px}
-.preset-bar{position:absolute;bottom:calc(100% + 8px);left:0;display:none;flex-direction:column;gap:5px;
+.preset-bar{position:absolute;bottom:calc(100% + 8px);left:0;display:none;flex-direction:column;gap:5px;pointer-events:auto;
   background:rgba(26,22,33,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line2);
   border-radius:14px;padding:7px;box-shadow:0 14px 40px rgba(0,0,0,.55)}
 .cam-wrap.open .preset-bar{display:flex}
@@ -137,6 +141,11 @@ input{font-family:inherit}
 .pgbtn svg{width:22px;height:22px;stroke:var(--text);fill:none;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
 .pgbtn.disabled{opacity:.3;pointer-events:none}
 .pglabel{min-width:98px;text-align:center;font-size:13px;font-weight:800;background:rgba(20,17,25,.82);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:13px;padding:8px;color:var(--text);box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.pager.mini{position:static;transform:none;gap:5px}
+.pager.mini .pgbtn{width:30px;height:30px;border-radius:9px;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.pager.mini .pgbtn svg{width:16px;height:16px;stroke-width:2.4}
+.pager.mini .pglabel{min-width:48px;font-size:12px;font-weight:800;padding:5px 7px;border-radius:9px;line-height:1}
+.pager.mini .pglabel small{display:none}
 .pglabel small{display:block;font-size:9px;color:var(--muted);font-weight:700;letter-spacing:.1em}
 
 /* on-stage micro nudge pad (left-center, when a dancer is selected) */
@@ -490,43 +499,44 @@ body.portrait .rotate{display:flex}
   <button id="zIn" aria-hidden="true"></button>
   <button id="zOut" aria-hidden="true"></button>
 
-  <!-- TOP-CENTER: status chips + 2D tool strip / 3D camera presets -->
-  <div class="topc">
-    <div class="chips">
-      <div class="chip" id="chipF">構成 —</div>
-      <div class="chip" id="chipMode">編集</div>
-    </div>
-    <div class="tool-strip" id="toolStrip">
-      <button class="tbtn" id="zReset" aria-label="全体表示にリセット"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 19v-5h5"/></svg></button>
-      <div class="tdiv"></div>
-      <button class="tbtn" id="fabSelect" aria-label="複数選択"><svg viewBox="0 0 24 24"><path d="M4 4h4M4 4v4M20 4h-4M20 4v4M4 20h4M4 20v-4M20 20h-4M20 20v-4"/></svg></button>
-      <button class="tbtn" id="fabSnap" aria-label="グリッド吸着"><svg viewBox="0 0 24 24"><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></button>
-      <button class="tbtn" id="fabPreview" aria-label="客席プレビュー"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
-      <button class="tbtn" id="fabTpl" aria-label="フォーメーション型"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="13" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg></button>
-    </div>
-  </div>
-
-  <!-- TOP-LEFT: export (medium) + collapsible app module (tap F) -->
+  <!-- TOP-LEFT: export + collapsible F, and the small 2D tool bar -->
   <div class="hud hud-tl">
-    <button class="gbtn md gold" id="hudExport" aria-label="書き出し"><svg viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M7 8l5-5 5 5"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg><span class="lbl">書き出し</span></button>
-    <div class="appwrap" id="appwrap">
-      <button class="ab-logo" id="abToggle" aria-label="ファイル・タイトル">F<span class="ab-dot" id="abDot"></span></button>
-      <div class="ab-panel" id="abPanel">
-        <input class="ab-title" id="titleInput" value="新しいフォーメーション" spellcheck="false" maxlength="48" placeholder="タイトル">
-        <div class="ab-row">
-          <div class="ab-save" id="saveStatus"><span class="dot"></span>保存済</div>
-          <div style="flex:1"></div>
-          <button class="ab-btn" id="undoBtn" aria-label="元に戻す"><svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-1"/></svg></button>
-          <button class="ab-btn" id="menuBtn" aria-label="メニュー"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></button>
+    <div class="tl-row">
+      <button class="gbtn md gold" id="hudExport" aria-label="書き出し"><svg viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M7 8l5-5 5 5"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg><span class="lbl">書き出し</span></button>
+      <div class="appwrap" id="appwrap">
+        <button class="ab-logo" id="abToggle" aria-label="ファイル・タイトル">F<span class="ab-dot" id="abDot"></span></button>
+        <div class="ab-panel" id="abPanel">
+          <input class="ab-title" id="titleInput" value="新しいフォーメーション" spellcheck="false" maxlength="48" placeholder="タイトル">
+          <div class="ab-row">
+            <div class="ab-save" id="saveStatus"><span class="dot"></span>保存済</div>
+            <div style="flex:1"></div>
+            <button class="ab-btn" id="undoBtn" aria-label="元に戻す"><svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-1"/></svg></button>
+            <button class="ab-btn" id="menuBtn" aria-label="メニュー"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></button>
+          </div>
         </div>
       </div>
     </div>
+    <div class="tool-strip" id="toolStrip">
+      <button class="tbtn sm" id="zReset" aria-label="全体表示にリセット"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 19v-5h5"/></svg></button>
+      <div class="tdiv"></div>
+      <button class="tbtn sm" id="fabSelect" aria-label="複数選択"><svg viewBox="0 0 24 24"><path d="M4 4h4M4 4v4M20 4h-4M20 4v4M4 20h4M4 20v-4M20 20h-4M20 20v-4"/></svg></button>
+      <button class="tbtn sm" id="fabSnap" aria-label="グリッド吸着"><svg viewBox="0 0 24 24"><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></button>
+      <button class="tbtn sm" id="fabPreview" aria-label="客席プレビュー"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      <button class="tbtn sm" id="fabTpl" aria-label="フォーメーション型"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="13" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg></button>
+    </div>
   </div>
 
-  <!-- TOP-RIGHT: 2D/3D toggle (small) + properties (small) -->
+  <!-- TOP-RIGHT: mini formation pager + 2D/3D toggle + properties -->
   <div class="hud hud-tr">
-    <button class="gbtn sm" id="hudView" aria-label="2D / 3D 切替"><svg id="viewIco" viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 12l9-5M12 12v10M12 12L3 7"/></svg><span class="lbl">2D</span></button>
-    <button class="gbtn sm" id="hudProps" aria-label="プロパティ"><svg viewBox="0 0 24 24"><path d="M4 6h11M4 12h7M4 18h13"/><circle cx="18" cy="6" r="2.2"/><circle cx="14" cy="12" r="2.2"/><circle cx="20" cy="18" r="2.2"/></svg><span class="lbl">設定</span></button>
+    <div class="pager mini">
+      <button class="pgbtn" id="pgPrev" aria-label="前の構成"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="pglabel" id="pgLabel"><small>FORMATION</small>1 / 2</div>
+      <button class="pgbtn" id="pgNext" aria-label="次の構成"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+    </div>
+    <div class="tr-row">
+      <button class="gbtn sm" id="hudView" aria-label="2D / 3D 切替"><svg id="viewIco" viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 12l9-5M12 12v10M12 12L3 7"/></svg><span class="lbl">2D</span></button>
+      <button class="gbtn sm" id="hudProps" aria-label="プロパティ"><svg viewBox="0 0 24 24"><path d="M4 6h11M4 12h7M4 18h13"/><circle cx="18" cy="6" r="2.2"/><circle cx="14" cy="12" r="2.2"/><circle cx="20" cy="18" r="2.2"/></svg><span class="lbl">設定</span></button>
+    </div>
   </div>
 
   <!-- BOTTOM-LEFT: camera presets (3D only, above) + dancers (large) -->
@@ -541,13 +551,6 @@ body.portrait .rotate{display:flex}
       <button class="gbtn md" id="hudCam" aria-label="カメラ視点"><svg viewBox="0 0 24 24"><path d="M3 7h3l2-2h8l2 2h3v12H3z"/><circle cx="12" cy="13" r="3.4"/></svg><span class="lbl">カメラ</span></button>
     </div>
     <button class="gbtn lg" id="hudDancers" aria-label="ダンサー"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 20a5 5 0 0 1 5-2.5"/></svg><span class="lbl">ダンサー</span><span class="badge" id="dancerBadge">0</span></button>
-  </div>
-
-  <!-- BOTTOM-CENTER: formation pager -->
-  <div class="pager">
-    <button class="pgbtn" id="pgPrev" aria-label="前の構成"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
-    <div class="pglabel" id="pgLabel"><small>FORMATION</small>1 / 2</div>
-    <button class="pgbtn" id="pgNext" aria-label="次の構成"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
   </div>
 
   <!-- BOTTOM-RIGHT: timeline (large) + layers + audio -->
@@ -1427,6 +1430,7 @@ function tick(ts){
 }
 function updateChips(){
   const cf=$("chipF"),cm=$("chipMode");
+  if(!cf||!cm) return;   // center labels removed in the HUD layout
   if(ui.playing){ cf.innerHTML="再生中"; cm.textContent="プレビュー"; cm.classList.add("move"); }
   else if(ui.editFormation<0){ cf.innerHTML="移動中"; cm.textContent="タップで構成へ"; cm.classList.add("move"); }
   else { cf.innerHTML="構成 <b>"+(ui.selFormation+1)+"</b>"; cm.textContent=ui.preview?"客席ビュー":"編集"; cm.classList.remove("move"); }
@@ -2647,21 +2651,24 @@ function wire(){
   $("hudLayers").addEventListener("click",()=>{ renderLayersList(); openSheet("sheetLayers"); });
   $("hudAudio").addEventListener("click",()=>{ renderAudioSheet(); openSheet("sheetAudio"); });
   $("tlClose").addEventListener("click",()=>closeTimeline());
-  // collapsible F (title / undo / menu) dropdown
-  $("abToggle").addEventListener("click",e=>{ e.stopPropagation(); $("appwrap").classList.toggle("open"); });
-  // camera-preset pop-up (3D)
-  $("hudCam").addEventListener("click",e=>{ e.stopPropagation(); $("camWrap").classList.toggle("open"); });
-  // tapping empty space closes the pop-ups
-  document.addEventListener("pointerdown",e=>{
-    if(!e.target.closest(".appwrap")) $("appwrap").classList.remove("open");
-    if(!e.target.closest(".cam-wrap")) $("camWrap").classList.remove("open");
-  });
+  // collapsible F (title / undo / menu) + camera-preset pop-up
+  function closeHudPopups(except){
+    if(except!=="app"){ const a=$("appwrap"); if(a)a.classList.remove("open"); }
+    if(except!=="cam"){ const c=$("camWrap"); if(c)c.classList.remove("open"); }
+  }
+  $("abToggle").addEventListener("click",e=>{ e.stopPropagation(); const o=$("appwrap").classList.contains("open"); closeHudPopups(); if(!o)$("appwrap").classList.add("open"); });
+  $("hudCam").addEventListener("click",e=>{ e.stopPropagation(); const o=$("camWrap").classList.contains("open"); closeHudPopups(); if(!o)$("camWrap").classList.add("open"); });
+  // tapping the stage closes any open pop-up (capture so it runs before stage drag)
+  $("stagewrap").addEventListener("pointerdown",()=>closeHudPopups(),true);
   // 3D camera presets
-  document.querySelectorAll("[data-cam]").forEach(b=>b.addEventListener("click",()=>{
-    document.querySelectorAll("[data-cam]").forEach(x=>x.classList.toggle("on",x===b));
-    if(window.three&&three.ready&&three.setCamPreset) three.setCamPreset(b.dataset.cam);
-    $("camWrap").classList.remove("open");
-  }));
+  document.querySelectorAll("[data-cam]").forEach(b=>{
+    b.addEventListener("click",e=>{ e.stopPropagation();
+      document.querySelectorAll("[data-cam]").forEach(x=>x.classList.toggle("on",x===b));
+      if(!(window.three&&three.ready)) init3D();
+      if(window.three&&three.ready&&three.setCamPreset) three.setCamPreset(b.dataset.cam);
+      closeHudPopups(); haptic();
+    });
+  });
 
   // ---- dancers sheet ----
   $("addDancerBtn").addEventListener("click",()=>{ addDancer(); openSheet("sheetDancers"); });
