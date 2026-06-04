@@ -27,6 +27,7 @@
   --sat:env(safe-area-inset-top); --sab:env(safe-area-inset-bottom);
   --sal:env(safe-area-inset-left); --sar:env(safe-area-inset-right);
   --ease:cubic-bezier(.22,.61,.36,1);
+  --tlh:218px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overscroll-behavior:none}
@@ -55,7 +56,8 @@ input{font-family:inherit}
 .app.view3d .tool-strip,.app.view3d .nudgepad,.app.view3d .coord{display:none!important}
 .cam-wrap{display:none}
 .app.view3d .cam-wrap{display:flex}
-.app.tlopen .hud-bl,.app.tlopen .hud-br,.app.tlopen .pager{opacity:0;pointer-events:none;transition:opacity .2s}
+.app.tlopen .hud-bl,.app.tlopen .hud-br{opacity:0;pointer-events:none;transition:opacity .2s}
+.app.tlopen .stagewrap{bottom:var(--tlh)}
 
 /* ---- generic HUD glass button ---- */
 .hud{position:absolute;z-index:12;display:flex;gap:9px;align-items:flex-end}
@@ -114,7 +116,7 @@ input{font-family:inherit}
 .chip{font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;background:rgba(20,17,25,.74);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);color:var(--muted);white-space:nowrap;letter-spacing:.02em}
 .chip b{color:var(--gold)}
 .chip.move{color:var(--cyan);border-color:var(--cyan2)}
-.tool-strip{pointer-events:auto;display:flex;gap:6px;background:rgba(26,22,33,.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line2);border-radius:16px;padding:6px}
+.tool-strip{pointer-events:auto;display:grid;grid-template-columns:repeat(2,auto);gap:5px;background:rgba(26,22,33,.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line2);border-radius:14px;padding:5px}
 .tbtn{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:transparent;border:1px solid transparent;color:var(--text)}
 .tbtn.sm{width:36px;height:36px;border-radius:10px}
 .tbtn.sm svg{width:18px;height:18px}
@@ -186,7 +188,7 @@ body.portrait .rotate{display:flex}
 /* ============ TIMELINE (slide-up overlay) ============ */
 .tlpanel{position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--bg2);border-top:1px solid var(--line2);
   border-radius:var(--r3) var(--r3) 0 0;box-shadow:0 -16px 50px rgba(0,0,0,.55);
-  display:flex;flex-direction:column;height:226px;padding-bottom:var(--sab);
+  display:flex;flex-direction:column;height:var(--tlh);padding-bottom:var(--sab);
   transform:translateY(118%);transition:transform .32s var(--ease)}
 .tlpanel.open{transform:translateY(0)}
 .tl-handle{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:8px 14px 4px}
@@ -479,18 +481,6 @@ body.portrait .rotate{display:flex}
     <canvas id="cv2d"></canvas>
     <div id="cv3d-host"></div>
     <div class="coord" id="coord">0.0 , 0.0</div>
-
-    <!-- on-stage micro nudge pad (left-center; appears when a dancer is selected) -->
-    <div class="nudgepad" id="nudgePad" style="display:none">
-      <div class="np-read" id="npRead">—</div>
-      <div class="np-grid">
-        <div></div><button class="np-btn" data-snudge="u"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button><div></div>
-        <button class="np-btn" data-snudge="l"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></button>
-        <button class="np-btn ctr" id="npStep" aria-label="ステップ切替">.25</button>
-        <button class="np-btn" data-snudge="r"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-        <div></div><button class="np-btn" data-snudge="d"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg></button><div></div>
-      </div>
-    </div>
   </div>
 
   <!-- hidden legacy controls kept for engine wiring -->
@@ -518,8 +508,6 @@ body.portrait .rotate{display:flex}
     </div>
     <div class="tool-strip" id="toolStrip">
       <button class="tbtn sm" id="zReset" aria-label="全体表示にリセット"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 19v-5h5"/></svg></button>
-      <div class="tdiv"></div>
-      <button class="tbtn sm" id="fabSelect" aria-label="複数選択"><svg viewBox="0 0 24 24"><path d="M4 4h4M4 4v4M20 4h-4M20 4v4M4 20h4M4 20v-4M20 20h-4M20 20v-4"/></svg></button>
       <button class="tbtn sm" id="fabSnap" aria-label="グリッド吸着"><svg viewBox="0 0 24 24"><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></button>
       <button class="tbtn sm" id="fabPreview" aria-label="客席プレビュー"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
       <button class="tbtn sm" id="fabTpl" aria-label="フォーメーション型"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="13" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg></button>
@@ -540,16 +528,8 @@ body.portrait .rotate{display:flex}
   </div>
 
   <!-- BOTTOM-LEFT: camera presets (3D only, above) + dancers (large) -->
+  <!-- BOTTOM-LEFT: dancers (large) -->
   <div class="hud hud-bl">
-    <div class="cam-wrap" id="camWrap">
-      <div class="preset-bar" id="presetBar">
-        <button class="pbtn" data-cam="audience">客席</button>
-        <button class="pbtn on" data-cam="angle">斜め</button>
-        <button class="pbtn" data-cam="front">正面</button>
-        <button class="pbtn" data-cam="top">俯瞰</button>
-      </div>
-      <button class="gbtn md" id="hudCam" aria-label="カメラ視点"><svg viewBox="0 0 24 24"><path d="M3 7h3l2-2h8l2 2h3v12H3z"/><circle cx="12" cy="13" r="3.4"/></svg><span class="lbl">カメラ</span></button>
-    </div>
     <button class="gbtn lg" id="hudDancers" aria-label="ダンサー"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 20a5 5 0 0 1 5-2.5"/></svg><span class="lbl">ダンサー</span><span class="badge" id="dancerBadge">0</span></button>
   </div>
 
@@ -1479,40 +1459,38 @@ function onPointerDown(e){
   if(ui.playing) return;
   const rect=cv2d.getBoundingClientRect(), px=e.clientX-rect.left, py=e.clientY-rect.top;
 
-  // during a transition: tap selects + snaps to nearest formation
+  // during a transition: tap adds to selection (additive) + snaps to nearest formation
   if(ui.editFormation<0){
     const pos=positionsAt(ui.time), hit=hitDancer(px,py,pos), ni=nearestFormationAt(ui.time);
     if(ni>=0)seekToFormation(ni);
-    if(hit){ if(ui.multiSelect)toggleSel(hit); else setSel(hit); } else if(!ui.multiSelect)setSel(null);
+    if(hit){ if(!isSel(hit)) ui.sel.push(hit); } else setSel(null);
     refreshAll(); return;
   }
   const ef=ui.editFormation, f=state.formations[ef];
-  // path handle (primary selected)
+  // path curve handle — only when exactly one dancer is selected
   const pid=primarySel();
-  if(pid&&ef>=1&&!ui.multiSelect){
+  if(pid&&ef>=1&&ui.sel.length===1){
     const A=state.formations[ef-1],B=state.formations[ef],p0=A.positions[pid],p1=B.positions[pid];
     if(p0&&p1){ const path=B.paths&&B.paths[pid],ctrl=path&&path.curve?{x:path.cx,z:path.cz}:{x:(p0.x+p1.x)/2,z:(p0.z+p1.z)/2},hp=s2p(ctrl.x,ctrl.z);
       if(Math.hypot(px-hp.x,py-hp.y)<=HANDLE_R+HIT_SLOP){ drag={kind:"handle",id:pid,moved:false}; haptic(); return; } }
   }
-  // dancer hit
+  // dancer hit — tapping a dancer ADDS it to the selection (multi-select by tap)
   const hit=hitDancer(px,py,f.positions);
   if(hit){
-    if(ui.multiSelect){ toggleSel(hit); haptic(); renderDancerList(); openOrUpdateProps(); updateNudgePad(); draw2D(); return; }
-    if(!isSel(hit)) setSel(hit);
+    if(!isSel(hit)) ui.sel.push(hit);
     ui.selDevice=null;
     const dp=s2p(f.positions[hit].x,f.positions[hit].z);
-    drag={ kind:"group", grab:{dx:dp.x-px,dy:dp.y-py}, start:{}, lead:hit, moved:false, wasSel:isSel(hit), x0:px, y0:py };
+    drag={ kind:"group", grab:{dx:dp.x-px,dy:dp.y-py}, start:{}, lead:hit, moved:false, x0:px, y0:py };
     ui.sel.forEach(id=>{ const q=f.positions[id]; drag.start[id]={x:q.x,z:q.z}; });
     haptic(); openOrUpdateProps(); renderDancerList(); draw2D(); return;
   }
   // device hit (after dancers, so dancers win when overlapping)
-  if(!ui.multiSelect){ const dev=deviceAt(px,py);
-    if(dev){ ui.selDevice=dev.id; setSel(null); const c=s2p(dev.x,dev.z);
-      drag={ kind:"device", id:dev.id, grab:{dx:c.x-px,dy:c.y-py}, moved:false, x0:px, y0:py };
-      haptic(); openOrUpdateProps(); draw2D(); return; } }
-  // empty -> marquee (multi-select) or deselect
-  if(ui.multiSelect){ marquee={x0:px,y0:py,x1:px,y1:py,base:[...ui.sel],moved:false}; }
-  else { setSel(null); ui.selDevice=null; openOrUpdateProps(); renderDancerList(); updateNudgePad(); }
+  const dev=deviceAt(px,py);
+  if(dev){ ui.selDevice=dev.id; setSel(null); const c=s2p(dev.x,dev.z);
+    drag={ kind:"device", id:dev.id, grab:{dx:c.x-px,dy:c.y-py}, moved:false, x0:px, y0:py };
+    haptic(); openOrUpdateProps(); draw2D(); return; }
+  // empty -> drag = box(marquee) select (adds to selection); tap = clear (handled on pointerup)
+  marquee={x0:px,y0:py,x1:px,y1:py,base:[...ui.sel],moved:false};
   draw2D();
 }
 let _mEv=null,_mRaf=0;
@@ -1563,7 +1541,7 @@ function onPointerUp(e){
   if(_mRaf){ cancelAnimationFrame(_mRaf); _mRaf=0; } _mEv=null;
   hideCoord(); dragLift=null;
   if(marquee){ const tapped=!marquee.moved; marquee=null;
-    if(tapped&&ui.multiSelect){ ui.multiSelect=false; const fb=$("fabSelect"); if(fb)fb.classList.remove("on"); toast("複数選択：オフ"); }
+    if(tapped){ setSel(null); ui.selDevice=null; }
     renderDancerList(); openOrUpdateProps(); draw2D(); autoSave(); }
   if(drag){ const tapDevice=(drag.kind==="device"&&!drag.moved); const changed=drag.moved; drag=null;
     if(tapDevice){ openSheet("sheetProps"); openOrUpdateProps(); }
@@ -1685,7 +1663,7 @@ function renderDancerList(){
       const open=palette.style.display!=="none"; palette.style.display=open?"none":"block";
       if(!open){ buildSw(palette.querySelector('[data-sw="top"]'),"top",d.top||d.color); buildSw(palette.querySelector('[data-sw="bot"]'),"bot",d.bottom); } });
     row.addEventListener("click",e=>{ if(e.target.closest(".x")||e.target.closest(".nm")||e.target.closest(".swbtn"))return;
-      if(ui.multiSelect)toggleSel(d.id); else setSel(d.id);
+      setSel(d.id);
       renderDancerList(); draw2D(); openOrUpdateProps(); updateNudgePad(); });
   });
 }
@@ -2605,25 +2583,12 @@ function wire(){
   window.addEventListener("pointerup",onPointerUp);
   window.addEventListener("pointercancel",onPointerUp);
 
-  // ---- FABs ----
-  $("fabSelect").addEventListener("click",()=>{ ui.multiSelect=!ui.multiSelect; $("fabSelect").classList.toggle("on",ui.multiSelect);
-    if(!ui.multiSelect&&ui.sel.length>1){ ui.sel=ui.sel.slice(-1); draw2D(); renderDancerList(); openOrUpdateProps(); }
-    updateNudgePad();
-    toast(ui.multiSelect?"複数選択：オン（空白をなぞって範囲選択）":"複数選択：オフ"); haptic(); });
+  // ---- 2D tools ----
   $("fabSnap").addEventListener("click",()=>{ ui.snap=!ui.snap; $("fabSnap").classList.toggle("on",ui.snap); draw2D(); toast(ui.snap?"グリッド吸着：オン":"グリッド吸着：オフ"); haptic(); });
-  $("fabPreview").addEventListener("click",()=>{ ui.preview=!ui.preview; $("fabPreview").classList.toggle("on",ui.preview); updateChips(); updateNudgePad(); draw2D(); haptic(); });
+  $("fabPreview").addEventListener("click",()=>{ ui.preview=!ui.preview; $("fabPreview").classList.toggle("on",ui.preview); updateChips(); draw2D(); haptic(); });
   $("fabTpl").addEventListener("click",()=>{ renderTemplates(); openSheet("sheetTpl"); });
   $("fabLayers").addEventListener("click",()=>{ renderLayersList(); openSheet("sheetLayers"); });
   $("fabEdit").addEventListener("click",()=>{ if(!ui.sel.length)return; openSheet("sheetProps"); renderDancerProps(); });
-  // on-stage nudge pad
-  $("npStep").addEventListener("click",()=>{ const seq=[0.1,0.25,0.5,1]; const i=seq.indexOf(ui.nudgeStep); ui.nudgeStep=seq[(i+1)%seq.length]; updateNudgePad(); haptic(); });
-  document.querySelectorAll("[data-snudge]").forEach(btn=>{
-    const dir=btn.dataset.snudge; let hold=null,rep=null,started=false;
-    const start=()=>{ beginEdit(); started=true; nudgeSelected(dir); hold=setTimeout(()=>{ rep=setInterval(()=>nudgeSelected(dir),90); },380); };
-    const stop=()=>{ clearTimeout(hold); clearInterval(rep); rep=null; if(started){ started=false; endEdit(); } };
-    btn.addEventListener("pointerdown",e=>{ e.preventDefault(); start(); });
-    btn.addEventListener("pointerup",stop); btn.addEventListener("pointercancel",stop); btn.addEventListener("pointerleave",stop);
-  });
   // layers sheet add
   $("layersAdd").addEventListener("click",()=>{ addFormation(ui.selFormation); renderLayersList(); toast("構成を追加しました"); });
 
@@ -2651,24 +2616,11 @@ function wire(){
   $("hudLayers").addEventListener("click",()=>{ renderLayersList(); openSheet("sheetLayers"); });
   $("hudAudio").addEventListener("click",()=>{ renderAudioSheet(); openSheet("sheetAudio"); });
   $("tlClose").addEventListener("click",()=>closeTimeline());
-  // collapsible F (title / undo / menu) + camera-preset pop-up
-  function closeHudPopups(except){
-    if(except!=="app"){ const a=$("appwrap"); if(a)a.classList.remove("open"); }
-    if(except!=="cam"){ const c=$("camWrap"); if(c)c.classList.remove("open"); }
-  }
+  // collapsible F (title / undo / menu) dropdown
+  function closeHudPopups(){ const a=$("appwrap"); if(a)a.classList.remove("open"); }
   $("abToggle").addEventListener("click",e=>{ e.stopPropagation(); const o=$("appwrap").classList.contains("open"); closeHudPopups(); if(!o)$("appwrap").classList.add("open"); });
-  $("hudCam").addEventListener("click",e=>{ e.stopPropagation(); const o=$("camWrap").classList.contains("open"); closeHudPopups(); if(!o)$("camWrap").classList.add("open"); });
-  // tapping the stage closes any open pop-up (capture so it runs before stage drag)
+  // tapping the stage closes the dropdown (capture so it runs before stage drag)
   $("stagewrap").addEventListener("pointerdown",()=>closeHudPopups(),true);
-  // 3D camera presets
-  document.querySelectorAll("[data-cam]").forEach(b=>{
-    b.addEventListener("click",e=>{ e.stopPropagation();
-      document.querySelectorAll("[data-cam]").forEach(x=>x.classList.toggle("on",x===b));
-      if(!(window.three&&three.ready)) init3D();
-      if(window.three&&three.ready&&three.setCamPreset) three.setCamPreset(b.dataset.cam);
-      closeHudPopups(); haptic();
-    });
-  });
 
   // ---- dancers sheet ----
   $("addDancerBtn").addEventListener("click",()=>{ addDancer(); openSheet("sheetDancers"); });
@@ -2721,7 +2673,6 @@ async function boot(){
   ui.editFormation=ui.selFormation;
   // reflect ui toggles in fabs
   $("fabSnap").classList.toggle("on",ui.snap);
-  $("fabSelect").classList.toggle("on",ui.multiSelect);
   resize2D();
   seekToFormation(ui.selFormation);
   refreshAll();
@@ -2753,8 +2704,11 @@ function updateOrientation(){
 function openTimeline(){
   $("tlpanel").classList.add("open"); $("app").classList.add("tlopen");
   renderTimeline(); positionPlayhead(); _waveDirty=true; refreshWave(); updateTimecode();
+  requestAnimationFrame(()=>{ resize2D(); if(window.three&&three.ready)three.resize(); });
 }
-function closeTimeline(){ $("tlpanel").classList.remove("open"); $("app").classList.remove("tlopen"); }
+function closeTimeline(){ $("tlpanel").classList.remove("open"); $("app").classList.remove("tlopen");
+  requestAnimationFrame(()=>{ resize2D(); if(window.three&&three.ready)three.resize(); });
+}
 function toggleTimeline(){ $("tlpanel").classList.contains("open") ? closeTimeline() : openTimeline(); }
 (function(){           // drag the timeline grip down to dismiss
   const onReady=()=>{ const h=$("tlpanel"); const grip=h&&h.querySelector(".tl-handle .grab"); if(!grip)return;
@@ -2803,7 +2757,6 @@ function toggleView(){
   }else{
     ui.view="2d";
     $("app").classList.remove("view3d");
-    $("camWrap").classList.remove("open");
     $("hudView").classList.remove("on"); $("hudView").querySelector(".lbl").textContent="2D";
     requestAnimationFrame(resize2D);
   }
