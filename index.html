@@ -53,8 +53,8 @@ input{font-family:inherit}
 .app.view3d #cv2d{display:none}
 .app.view3d #cv3d-host{display:block}
 .app.view3d .tool-strip,.app.view3d .nudgepad,.app.view3d .coord{display:none!important}
-.preset-bar{display:none}
-.app.view3d .preset-bar{display:flex}
+.cam-wrap{display:none}
+.app.view3d .cam-wrap{display:flex}
 .app.tlopen .hud-bl,.app.tlopen .hud-br,.app.tlopen .pager{opacity:0;pointer-events:none;transition:opacity .2s}
 
 /* ---- generic HUD glass button ---- */
@@ -78,23 +78,33 @@ input{font-family:inherit}
 /* corner anchors (respect safe areas) */
 .hud-tl{top:calc(10px + var(--sat));left:calc(10px + var(--sal));align-items:flex-start;flex-direction:column}
 .hud-tr{top:calc(10px + var(--sat));right:calc(10px + var(--sar));align-items:flex-start}
-.hud-bl{bottom:calc(12px + var(--sab));left:calc(12px + var(--sal))}
+.hud-bl{bottom:calc(12px + var(--sab));left:calc(12px + var(--sal));flex-direction:column;align-items:flex-start;gap:9px}
+.cam-wrap{position:relative;flex-direction:column;align-items:flex-start}
 .hud-br{bottom:calc(12px + var(--sab));right:calc(12px + var(--sar));flex-direction:column;align-items:flex-end;gap:9px}
 .hud-br .br-row{display:flex;gap:9px;align-items:flex-end}
 
-/* top-left app module (title / undo / menu) */
-.appbar{display:flex;align-items:center;gap:6px;background:rgba(26,22,33,.72);backdrop-filter:blur(13px) saturate(1.3);-webkit-backdrop-filter:blur(13px) saturate(1.3);
-  border:1px solid var(--line2);border-radius:16px;padding:6px 7px;box-shadow:0 8px 26px rgba(0,0,0,.4);max-width:48vw}
-.ab-logo{width:28px;height:28px;border-radius:8px;flex:0 0 28px;display:grid;place-items:center;background:radial-gradient(circle at 34% 30%,var(--gold),var(--gold2));box-shadow:0 0 14px var(--goldglow);color:#1a140a;font-weight:900;font-size:14px}
-.ab-title{flex:1;min-width:54px;max-width:190px;background:transparent;border:1px solid transparent;color:var(--text);font-size:13px;font-weight:700;padding:6px 7px;border-radius:8px;text-overflow:ellipsis}
-.ab-title:focus{outline:none;border-color:var(--gold2);background:var(--bg3)}
-.ab-save{flex:0 0 auto;display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9px;color:var(--muted2);white-space:nowrap}
-.ab-save .dot{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 7px var(--ok)}
+/* top-left app module — collapsed to "F"; tap to reveal title / undo / menu */
+.appwrap{position:relative}
+.ab-logo{position:relative;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;
+  background:radial-gradient(circle at 34% 30%,var(--gold),var(--gold2));box-shadow:0 6px 20px rgba(0,0,0,.4),0 0 14px var(--goldglow);
+  color:#1a140a;font-weight:900;font-size:18px;border:none}
+.ab-logo:active{transform:scale(.92)}
+.ab-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 7px var(--ok);opacity:0;transition:opacity .2s}
+.ab-dot.saving{background:var(--gold);box-shadow:0 0 7px var(--gold);opacity:1;animation:pulse 1s infinite}
+.ab-panel{position:absolute;top:calc(100% + 8px);left:0;width:248px;display:none;flex-direction:column;gap:8px;
+  background:rgba(26,22,33,.92);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);
+  border:1px solid var(--line2);border-radius:16px;padding:10px;box-shadow:0 14px 40px rgba(0,0,0,.55)}
+.appwrap.open .ab-panel{display:flex}
+.ab-title{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--text);font-size:14px;font-weight:700;padding:10px 11px;border-radius:10px}
+.ab-title:focus{outline:none;border-color:var(--gold2)}
+.ab-row{display:flex;align-items:center;gap:8px}
+.ab-save{flex:0 0 auto;display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--muted2);white-space:nowrap}
+.ab-save .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 7px var(--ok)}
 .ab-save .dot.saving{background:var(--gold);box-shadow:0 0 7px var(--gold);animation:pulse 1s infinite}
 @keyframes pulse{50%{opacity:.35}}
-.ab-btn{width:36px;height:36px;flex:0 0 36px;border-radius:11px;display:grid;place-items:center;background:var(--bg3);border:1px solid var(--line)}
+.ab-btn{width:40px;height:40px;flex:0 0 40px;border-radius:12px;display:grid;place-items:center;background:var(--bg3);border:1px solid var(--line)}
 .ab-btn:active{background:var(--bg4);transform:scale(.93)}
-.ab-btn svg{width:18px;height:18px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ab-btn svg{width:19px;height:19px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 /* top-center: chips + tool strip (2D) / preset bar (3D) */
 .topc{position:absolute;top:calc(10px + var(--sat));left:50%;transform:translateX(-50%);z-index:11;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
@@ -102,16 +112,20 @@ input{font-family:inherit}
 .chip{font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;background:rgba(20,17,25,.74);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);color:var(--muted);white-space:nowrap;letter-spacing:.02em}
 .chip b{color:var(--gold)}
 .chip.move{color:var(--cyan);border-color:var(--cyan2)}
-.tool-strip,.preset-bar{pointer-events:auto;display:flex;gap:6px;background:rgba(26,22,33,.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line2);border-radius:16px;padding:6px}
+.tool-strip{pointer-events:auto;display:flex;gap:6px;background:rgba(26,22,33,.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line2);border-radius:16px;padding:6px}
 .tbtn{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:transparent;border:1px solid transparent;color:var(--text)}
 .tbtn:active{transform:scale(.9)}
 .tbtn svg{width:20px;height:20px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .tbtn.on{background:linear-gradient(180deg,var(--gold),var(--gold2));border-color:transparent}
 .tbtn.on svg{stroke:#1a140a}
 .tdiv{width:1px;align-self:stretch;background:var(--line2);margin:2px 1px}
-.preset-bar .pbtn{padding:0 15px;height:38px;border-radius:11px;font-size:12px;font-weight:700;color:var(--muted);background:transparent;border:1px solid transparent}
-.preset-bar .pbtn.on{background:var(--cyan);color:#06222a}
-.preset-bar .pbtn:active{transform:scale(.94)}
+.preset-bar{position:absolute;bottom:calc(100% + 8px);left:0;display:none;flex-direction:column;gap:5px;
+  background:rgba(26,22,33,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line2);
+  border-radius:14px;padding:7px;box-shadow:0 14px 40px rgba(0,0,0,.55)}
+.cam-wrap.open .preset-bar{display:flex}
+.preset-bar .pbtn{min-width:96px;text-align:center;padding:0 16px;height:40px;border-radius:11px;font-size:13px;font-weight:700;color:var(--text);background:var(--bg3);border:1px solid var(--line)}
+.preset-bar .pbtn.on{background:var(--cyan);color:#06222a;border-color:transparent}
+.preset-bar .pbtn:active{transform:scale(.95)}
 
 /* drag coordinate readout (transient) */
 .coord{position:absolute;left:50%;bottom:calc(88px + var(--sab));transform:translateX(-50%);z-index:14;font-family:var(--mono);font-size:13px;font-weight:600;background:rgba(20,17,25,.9);border:1px solid var(--gold2);color:var(--gold);padding:6px 12px;border-radius:10px;display:none}
@@ -490,23 +504,22 @@ body.portrait .rotate{display:flex}
       <button class="tbtn" id="fabPreview" aria-label="客席プレビュー"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
       <button class="tbtn" id="fabTpl" aria-label="フォーメーション型"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="13" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg></button>
     </div>
-    <div class="preset-bar" id="presetBar">
-      <button class="pbtn" data-cam="audience">客席</button>
-      <button class="pbtn on" data-cam="angle">斜め</button>
-      <button class="pbtn" data-cam="front">正面</button>
-      <button class="pbtn" data-cam="top">俯瞰</button>
-    </div>
   </div>
 
-  <!-- TOP-LEFT: export (medium) + app module (title / undo / menu) -->
+  <!-- TOP-LEFT: export (medium) + collapsible app module (tap F) -->
   <div class="hud hud-tl">
     <button class="gbtn md gold" id="hudExport" aria-label="書き出し"><svg viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M7 8l5-5 5 5"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg><span class="lbl">書き出し</span></button>
-    <div class="appbar">
-      <div class="ab-logo">F</div>
-      <input class="ab-title" id="titleInput" value="新しいフォーメーション" spellcheck="false" maxlength="48">
-      <div class="ab-save" id="saveStatus"><span class="dot"></span>保存</div>
-      <button class="ab-btn" id="undoBtn" aria-label="元に戻す"><svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-1"/></svg></button>
-      <button class="ab-btn" id="menuBtn" aria-label="メニュー"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></button>
+    <div class="appwrap" id="appwrap">
+      <button class="ab-logo" id="abToggle" aria-label="ファイル・タイトル">F<span class="ab-dot" id="abDot"></span></button>
+      <div class="ab-panel" id="abPanel">
+        <input class="ab-title" id="titleInput" value="新しいフォーメーション" spellcheck="false" maxlength="48" placeholder="タイトル">
+        <div class="ab-row">
+          <div class="ab-save" id="saveStatus"><span class="dot"></span>保存済</div>
+          <div style="flex:1"></div>
+          <button class="ab-btn" id="undoBtn" aria-label="元に戻す"><svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-1"/></svg></button>
+          <button class="ab-btn" id="menuBtn" aria-label="メニュー"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -516,8 +529,17 @@ body.portrait .rotate{display:flex}
     <button class="gbtn sm" id="hudProps" aria-label="プロパティ"><svg viewBox="0 0 24 24"><path d="M4 6h11M4 12h7M4 18h13"/><circle cx="18" cy="6" r="2.2"/><circle cx="14" cy="12" r="2.2"/><circle cx="20" cy="18" r="2.2"/></svg><span class="lbl">設定</span></button>
   </div>
 
-  <!-- BOTTOM-LEFT: dancers (large) -->
+  <!-- BOTTOM-LEFT: camera presets (3D only, above) + dancers (large) -->
   <div class="hud hud-bl">
+    <div class="cam-wrap" id="camWrap">
+      <div class="preset-bar" id="presetBar">
+        <button class="pbtn" data-cam="audience">客席</button>
+        <button class="pbtn on" data-cam="angle">斜め</button>
+        <button class="pbtn" data-cam="front">正面</button>
+        <button class="pbtn" data-cam="top">俯瞰</button>
+      </div>
+      <button class="gbtn md" id="hudCam" aria-label="カメラ視点"><svg viewBox="0 0 24 24"><path d="M3 7h3l2-2h8l2 2h3v12H3z"/><circle cx="12" cy="13" r="3.4"/></svg><span class="lbl">カメラ</span></button>
+    </div>
     <button class="gbtn lg" id="hudDancers" aria-label="ダンサー"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 20a5 5 0 0 1 5-2.5"/></svg><span class="lbl">ダンサー</span><span class="badge" id="dancerBadge">0</span></button>
   </div>
 
@@ -683,7 +705,7 @@ body.portrait .rotate{display:flex}
 /* ---------- constants ---------- */
 const PALETTE = ["#E8C77E","#74C7D6","#E08A8A","#9FD68A","#B79CE0","#E0A86B","#7EA8E8","#E07EB4","#6BD0B0","#D6C674","#F2A65A","#8AD0E0","#D98AAE","#A0E08A","#C9B0F0"];
 const COSTUME = ["#E8C77E","#74C7D6","#E08A8A","#9FD68A","#B79CE0","#E0A86B","#7EA8E8","#E07EB4","#6BD0B0","#D6C674","#FFFFFF","#222230","#C0392B","#2C3E70","#1F8A70"];
-let STAGE = { W:16, D:12 };
+let STAGE = { W:16, D:8 };
 const HANDLE_R = 13;        // px — bigger for touch
 let   DOT_R    = 15;        // px (recomputed per device)
 const HIT_SLOP = 16;        // px extra hit radius for fingers
@@ -695,7 +717,7 @@ let state = {
   formations:[],   // {id,name,hold,enter,sync,positions:{id:{x,z}},paths:{id:{curve,cx,cz}},move:{id:{speed,delay}}}
   audio:{ name:null, url:null, peaks:null, dur:0 },
   devices:[],   // {id,type,x,z,w,rot} stage apparatus
-  stage:{ W:16, D:12, wing:3, curtain:0 },
+  stage:{ W:16, D:8, wing:3, curtain:0 },
   show:{ marks:true, markNums:false, center:true, grid:true, num:true, name:true, nameP:false, pinSize:1 }
 };
 let ui = {
@@ -805,7 +827,7 @@ async function storageEstimate(){
    MODEL HELPERS
    ===================================================================== */
 function migrateState(){
-  if(!state.stage) state.stage={W:16,D:12,wing:3,curtain:0};
+  if(!state.stage) state.stage={W:16,D:8,wing:3,curtain:0};
   if(state.stage.wing==null) state.stage.wing=3;
   if(state.stage.curtain==null) state.stage.curtain=0;
   if(!state.show) state.show={marks:true,markNums:false,center:true,grid:true,num:true,name:true,nameP:false,pinSize:1};
@@ -1893,9 +1915,8 @@ function updateHistoryButtons(){
 /* ---------- autosave ---------- */
 let _saveT=null, _lastSavedJSON="";
 function setSaveStatus(txt, saving){
-  const el=$("saveStatus"); if(!el) return;
-  el.classList.toggle("saving",!!saving);
-  el.innerHTML='<span class="dot"></span>'+txt;
+  const el=$("saveStatus"); if(el){ el.classList.toggle("saving",!!saving); el.innerHTML='<span class="dot"></span>'+txt; }
+  const d=$("abDot"); if(d) d.classList.toggle("saving",!!saving);
 }
 function autoSave(){
   setSaveStatus("保存中…",true);
@@ -2513,7 +2534,7 @@ async function grantConsent(){
    DEMO SEED + SPLASH + ADD-MANY
    ===================================================================== */
 function seedDemo(){
-  state={ title:"新しいフォーメーション", dancers:[], formations:[], audio:{name:null,url:null,peaks:null,dur:0}, devices:[], stage:{W:16,D:12,wing:3,curtain:0}, show:{marks:false,markNums:false,center:true,grid:true,num:true,name:true,nameP:false,pinSize:1} };
+  state={ title:"新しいフォーメーション", dancers:[], formations:[], audio:{name:null,url:null,peaks:null,dur:0}, devices:[], stage:{W:16,D:8,wing:3,curtain:0}, show:{marks:false,markNums:false,center:true,grid:true,num:true,name:true,nameP:false,pinSize:1} };
   syncStage();
   ["A","B","C","D","E"].forEach((nm,i)=>{ const color=PALETTE[i%PALETTE.length];
     state.dancers.push({ id:uid(), name:nm, color, speed:1, top:color, bottom:"#33323a", fit:"big" }); });
@@ -2626,10 +2647,20 @@ function wire(){
   $("hudLayers").addEventListener("click",()=>{ renderLayersList(); openSheet("sheetLayers"); });
   $("hudAudio").addEventListener("click",()=>{ renderAudioSheet(); openSheet("sheetAudio"); });
   $("tlClose").addEventListener("click",()=>closeTimeline());
+  // collapsible F (title / undo / menu) dropdown
+  $("abToggle").addEventListener("click",e=>{ e.stopPropagation(); $("appwrap").classList.toggle("open"); });
+  // camera-preset pop-up (3D)
+  $("hudCam").addEventListener("click",e=>{ e.stopPropagation(); $("camWrap").classList.toggle("open"); });
+  // tapping empty space closes the pop-ups
+  document.addEventListener("pointerdown",e=>{
+    if(!e.target.closest(".appwrap")) $("appwrap").classList.remove("open");
+    if(!e.target.closest(".cam-wrap")) $("camWrap").classList.remove("open");
+  });
   // 3D camera presets
   document.querySelectorAll("[data-cam]").forEach(b=>b.addEventListener("click",()=>{
     document.querySelectorAll("[data-cam]").forEach(x=>x.classList.toggle("on",x===b));
     if(window.three&&three.ready&&three.setCamPreset) three.setCamPreset(b.dataset.cam);
+    $("camWrap").classList.remove("open");
   }));
 
   // ---- dancers sheet ----
@@ -2765,6 +2796,7 @@ function toggleView(){
   }else{
     ui.view="2d";
     $("app").classList.remove("view3d");
+    $("camWrap").classList.remove("open");
     $("hudView").classList.remove("on"); $("hudView").querySelector(".lbl").textContent="2D";
     requestAnimationFrame(resize2D);
   }
